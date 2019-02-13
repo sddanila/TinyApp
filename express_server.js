@@ -33,6 +33,7 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
     let templateVars = { 
       urlDatabase: urlDatabase,
+      users: users,
       user_id: req.cookies["user_id"]
      };
     res.render("urls_index", templateVars);
@@ -114,8 +115,13 @@ app.post("/register", (req, res) => {
   }
 });
 
+app.get("/login", (req, res) => {
+  res.render("urls_login");
+});
+
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username);
+  let userId = findUserByEmail(req.body.email);
+  res.cookie('user_id', userId);
   res.redirect("/urls");
 });
 

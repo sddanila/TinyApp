@@ -12,6 +12,19 @@
 <body style="font-size:20px; padding:50px;">
     <h1>TinyApp</h1>
     <% if(!user_id){ %>
+      <form action="/login" method="GET" class="form-inline">
+        <button class="btn btn-primary">Login</button>
+      </form>
+      <form action="/register" method="GET" class="form-inline">
+        <button class="btn btn-warning">Register</button>
+      </form>
+    <% } else { %>
+      <p>Logged in as <%= user_id %></p>
+      <form lass="form-inline" action="/logout" method="POST">
+        <button type="submit" class="btn btn-warning">Logout</button>
+      </form>
+     <% } %> 
+      <!-- <% if(!user_id){ %>
       <div class="container" class="float-right">
         <form class="form-inline" action="/login" method="POST">
           <label for="username">UserID: </label>
@@ -23,5 +36,5 @@
           <form lass="form-inline" action="/logout" method="POST">
             <button type="submit" class="btn btn-warning">Logout</button>
           </form>
-    <% } %>  
+    <% } %>   -->
     </div>
