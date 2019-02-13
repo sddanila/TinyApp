@@ -2,8 +2,11 @@
 <body style="font-size:20px; padding:50px;">
     <h1>TinyApp</h1>
     <a href="#">Create New TinyURL</a>
-    <p>TinyURL for <strong> <%= urlDatabase[shortURL] %> </strong></p>
-    <em> <%= shortURL %></em>  </li>
+    <p>ShortURL: <strong> <%= shortURL %> </strong></p>
+    <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">    
+        <input type="text" name="newLongURL" placeholder="<%= urlDatabase[shortURL] %>"></input>
+        <button>Update longURL</button>
+    </form>
 
 </body>
 </html>
