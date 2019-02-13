@@ -8,5 +8,20 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <title>TinyApp</title>
-
 </head>
+<body style="font-size:20px; padding:50px;">
+    <h1>TinyApp</h1>
+    <% if(!username){ %>
+      <div class="container" class="float-right">
+        <form class="form-inline" action="/login" method="POST">
+          <label for="username">Username: </label>
+          <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    <% } else {%>
+          <p>Logged in as <%= username %></p>
+          <form lass="form-inline" action="/logout" method="POST">
+            <button type="submit" class="btn btn-warning">Logout</button>
+          </form>
+    <% } %>  
+    </div>
