@@ -1,8 +1,8 @@
-<% include /partials/_headers %>
+<% include partials/_headers %>
 <body style="font-size:20px; padding:50px;">
     <h1>TinyApp</h1>
     <a href="#">Create New TinyURL</a>
-    <p>TinyURL for <strong><%= longURL %></strong></p>
+    <p>TinyURL for <strong> <%= urlDatabase[shortURL] %> </strong></p>
     <em> <%= shortURL %></em>  </li>
 
 </body>
