@@ -11,15 +11,15 @@
 </head>
 <body style="font-size:20px; padding:50px;">
     <h1>TinyApp</h1>
-    <% if(!username){ %>
+    <% if(!user_id){ %>
       <div class="container" class="float-right">
         <form class="form-inline" action="/login" method="POST">
-          <label for="username">Username: </label>
-          <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+          <label for="username">UserID: </label>
+          <input type="text" name="user_id" class="form-control" id="user_id" placeholder="UserId">
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     <% } else {%>
-          <p>Logged in as <%= username %></p>
+          <p>Logged in as <%= user_id %></p>
           <form lass="form-inline" action="/logout" method="POST">
             <button type="submit" class="btn btn-warning">Logout</button>
           </form>
