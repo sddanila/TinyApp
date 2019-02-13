@@ -1,6 +1,6 @@
 <% include partials/_headers %>
 
-    <a href="#">Create New TinyURL</a>
+    <a href="/urls/new">Create New TinyURL</a>
     <% for(var url in urlDatabase){%>
         <ul>
             <li><%= url %> <i class="fas fa-arrow-right"></i> <%= urlDatabase[url] %> <a href="/urls/<%=url%>">Edit</a><button>Delete <i class="far fa-trash-alt"></i></button><form method="POST" action="/urls/9sm5xK/delete">...</form></li>
