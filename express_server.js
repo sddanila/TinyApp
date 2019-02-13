@@ -13,6 +13,19 @@ var urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
+}
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -39,13 +52,14 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${randomURL}`);         // Respond with 'Ok' (we will replace this)
 });
 
+
 app.get("/urls/:shortURL", (req, res) => {
   // console.log(req.params.shortURL);
   let templateVars = { 
     urlDatabase: urlDatabase,
     shortURL: req.params.shortURL,
     username: req.cookies["username"]
-   };
+  };
   res.render("urls_show", templateVars);
 });
 
@@ -67,6 +81,27 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
+});
+
+app.get("/register", (req, res) => {
+  let templateVars = { 
+    urlDatabase: urlDatabase,
+    username: req.cookies["username"]
+  };
+  res.render("urls_register", templateVars);
+});
+
+app.post("/register", (req, res) => {
+  const { email, password } = req.body;
+  const id = generateRandomString();
+  users[id] = { 
+    'id': id,
+    'email': req.body.email,
+    'password': req.body.password 
+  };
+  console.log(users);
+  res.cookie('username', id);
+  res.redirect("/urls");
 });
 
 app.post("/login", (req, res) => {
