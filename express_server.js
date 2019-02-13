@@ -17,12 +17,12 @@ const users = {
   "userRandomID": {
     id: "userRandomID", 
     email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
+    password: "password"
   },
  "user2RandomID": {
     id: "user2RandomID", 
     email: "user2@example.com", 
-    password: "dishwasher-funk"
+    password: "password"
   }
 }
 
@@ -99,9 +99,7 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
   const foundUser = findUserByEmail(email);
   if (!email || email === "" || !password || password === "" || foundUser){
-    res.statusCode = 400;
-    console.log(res.statusCode);
-    console.log("error... ooopsie...");
+    res.send(400, "error... ooopsie...");
     res.redirect("/register");
   } else {
     const id = generateRandomString();
@@ -121,8 +119,14 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   let userId = findUserByEmail(req.body.email);
-  res.cookie('user_id', userId);
-  res.redirect("/urls");
+  if (!userId){
+    res.send(403, "Email not found!");
+  } else if (users[userId].password !== req.body.password){
+    res.send(403, "Wrong password!");
+  } else {
+    res.cookie('user_id', userId);
+    res.redirect("/urls");
+  }
 });
 
 app.post("/logout", (req, res) => {
