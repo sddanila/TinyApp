@@ -92,16 +92,25 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const { email, password } = req.body;
-  const id = generateRandomString();
-  users[id] = { 
-    'id': id,
-    'email': req.body.email,
-    'password': req.body.password 
-  };
-  console.log(users);
-  res.cookie('username', id);
-  res.redirect("/urls");
+  const email = req.body.email;
+  const password = req.body.password;
+  const foundUser = findUserByEmail(email);
+  if (!email || email === "" || !password || password === "" || foundUser){
+    res.statusCode = 400;
+    console.log(res.statusCode);
+    console.log("error... ooopsie...");
+    res.redirect("/register");
+  } else {
+    const id = generateRandomString();
+    users[id] = { 
+      'id': id,
+      'email': email,
+      'password': password 
+    };
+    console.log(users);
+    res.cookie('username', id);
+    res.redirect("/urls");
+  }
 });
 
 app.post("/login", (req, res) => {
@@ -124,4 +133,12 @@ app.listen(PORT, () => {
 
 function generateRandomString() {
     return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+}
+
+function findUserByEmail(email){
+  for (var userID in users){
+    if (users[userID].email === email){
+      return true
+    };
+  }
 }
