@@ -50,6 +50,8 @@ app.get("/urls/new", (req, res) => {
     urlDatabase: urlDatabase,
     user_id: req.cookies["user_id"]
   };
+  isRegistered(req.cookies["user_id"], res);
+  isLoggedIn(req.cookies["user_id"], res);
   res.render("urls_new", templateVars);
 });
 
@@ -122,10 +124,10 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   let userId = findUserByEmail(req.body.email);
-  let hashedPassword = users[userId].hashedPassword;
+  console.log(users);
   if (!userId){
     res.send(403, "Email not found!");
-  } else if (!bcrypt.compareSync(req.body.password, hashedPassword)){
+  } else if (!bcrypt.compareSync(req.body.password, users[userId].hashedPassword)){
     res.send(403, "Wrong password!");
   } else {
     res.cookie('user_id', userId);
@@ -148,30 +150,28 @@ function generateRandomString() {
 }
 
 function findUserByEmail(email){
+  for (var user in users){
+    if (users[user].email === email){
+      return user;
+    }
+  }
+}
+
+function isRegistered(userID, res){
   for (var userID in users){
-    if (users[userID].email === email){
-      console.log(userID);
-      console.log(users);
-      return userID;
-    };
+    if (userID){
+      return true;
+    } else {
+      res.redirect("/register");
+    }
   }
 }
 
-function isRegistered(userId){
-  const userId = users[userId];
-  if (userId){
-    return true;
-  } else {
-    res.redirect("/register");
+function isLoggedIn (cookie, res){
+    if (cookie){
+      return true;
+    } else {
+      res.redirect("/login");
+    }
   }
-}
-
-function isLoggedIn (userId){
-  const user = userId && users[userId];
-  if (user){
-    return true;
-  } else {
-    res.redirect("/login");
-  }
-}
 
