@@ -9,21 +9,41 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <title>TinyApp</title>
 </head>
+
 <body style="font-size:20px; padding:50px;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">TinyApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ml-auto">
+        <% if(!user_id){ %>
+          <a class="nav-item nav-link active" href="/login"><button class="btn btn-sm btn-outline-primary">Login</button> <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/register"><button class="btn btn-sm btn-outline-warning">Register</button></a>
+        
+          <% } else { %>
+          <a class="nav-item nav-link" href="#"><button type="submit" class="btn btn-outline-warning">Logout</button></a>
+          <span class="navbar-text">Logged in as <%= user_id %></span>
+          <% } %> 
+      </div>
+    </div>
+  </nav>
+
     <h1>TinyApp</h1>
-    <% if(!user_id){ %>
-      <form action="/login" method="GET" class="form-inline">
-        <button class="btn btn-primary">Login</button>
-      </form>
-      <form action="/register" method="GET" class="form-inline">
-        <button class="btn btn-warning">Register</button>
-      </form>
-    <% } else { %>
-      <p>Logged in as <%= user_id %></p>
-      <form lass="form-inline" action="/logout" method="POST">
-        <button type="submit" class="btn btn-warning">Logout</button>
-      </form>
-     <% } %> 
+   
+
+        
+
+
+        
+
+
+
+
+        
+
+
       <!-- <% if(!user_id){ %>
       <div class="container" class="float-right">
         <form class="form-inline" action="/login" method="POST">
