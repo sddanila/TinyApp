@@ -68,7 +68,7 @@ app.post("/urls", (req, res) => {
     longURL: req.body.longURL,
     userID: req.cookies["user_id"]
   }
-  console.log(urlDatabase);
+  // console.log(urlDatabase);
   res.redirect(`/urls/${randomURL}`);         // Respond with 'Ok' (we will replace this)
 });
 
@@ -87,11 +87,15 @@ app.get("/urls/:shortURL", (req, res) => {
   }
 });
 
-app.post("/urls/:shortURL", (req, res) => {
+app.post("/urls/:shortURL/edit", (req, res) => {
   let shortURL = req.params.shortURL;
   console.log(req.body.newLongURL);
-  urlDatabase[shortURL] = req.body.newLongURL;
-  res.redirect(`/urls/${shortURL}`);
+  urlDatabase[shortURL] = {
+    longURL: req.body.newLongURL,
+    userID: req.cookies["user_id"]
+  };
+  console.log(urlDatabase);
+  res.redirect("/urls");
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -101,7 +105,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
@@ -142,9 +146,9 @@ app.post("/login", (req, res) => {
   let userId = findUserByEmail(req.body.email);
   console.log(users);
   if (!userId){
-    res.send(403, "Email not found!");
+    res.status(403).send("Email not found!");
   } else if (!bcrypt.compareSync(req.body.password, users[userId].hashedPassword)){
-    res.send(403, "Wrong password!");
+    res.status(403).send("Wrong password!");
   } else {
     res.cookie('user_id', userId);
     res.redirect("/urls");
