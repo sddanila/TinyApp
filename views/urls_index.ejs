@@ -1,7 +1,8 @@
 <% include partials/_headers %>
 
     <a href="/urls/new">Create New TinyURL</a>
-    <% for(var url in urlDatabase){%>
+    <% for(var url in urlDatabase){ %>
+        <% if(urlDatabase[url].userID === user_id) {%>
         <ul>
             <li><%= url %> <i class="fas fa-arrow-right"></i> <%= urlDatabase[url].longURL %> 
                 <button class="btn btn-sm btn-warning"><a href="/urls/<%=url%>">Edit</a></button>
@@ -10,6 +11,7 @@
                 </form>
             </li>
         </ul>
+        <% } %>
     <% }%>
 </body>
 </html>

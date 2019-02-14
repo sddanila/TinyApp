@@ -36,13 +36,18 @@ app.get("/", (req, res) => {
   res.render("urls_welcome", templateVars);
 });
 
-app.get("/urls", (req, res) => {
+app.get("/urls", (req, res) => {  
+  if(isLoggedIn(req.cookies["user_id"])){
     let templateVars = { 
-      urlDatabase: urlDatabase,
-      users: users,
-      user_id: req.cookies["user_id"]
-     };
-    res.render("urls_index", templateVars);
+        urlDatabase: urlDatabase,
+        users: users,
+        user_id: req.cookies["user_id"]
+       };
+       checkUrlOwnership(req.cookies["user_id"]);
+       res.render("urls_index", templateVars);
+     } else {
+       res.redirect("/");
+     }
   });
 
 app.get("/urls/new", (req, res) => {
@@ -50,30 +55,41 @@ app.get("/urls/new", (req, res) => {
     urlDatabase: urlDatabase,
     user_id: req.cookies["user_id"]
   };
-  isRegistered(req.cookies["user_id"], res);
-  isLoggedIn(req.cookies["user_id"], res);
-  res.render("urls_new", templateVars);
+  if(isLoggedIn(req.cookies["user_id"])){
+    res.render("urls_new", templateVars);
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.post("/urls", (req, res) => {
   let randomURL = generateRandomString();
-  urlDatabase[randomURL] = req.body.longURL;
+  urlDatabase[randomURL] = {
+    longURL: req.body.longURL,
+    userID: req.cookies["user_id"]
+  }
+  console.log(urlDatabase);
   res.redirect(`/urls/${randomURL}`);         // Respond with 'Ok' (we will replace this)
 });
 
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { 
-    urlDatabase: urlDatabase,
-    shortURL: req.params.shortURL,
-    users: users,
-    user_id: req.cookies["user_id"]
-  };
-  res.render("urls_show", templateVars);
+  if(isLoggedIn(req.cookies["user_id"])){
+    let templateVars = { 
+      urlDatabase: urlDatabase,
+      shortURL: req.params.shortURL,
+      users: users,
+      user_id: req.cookies["user_id"]
+    };
+    res.render("urls_show", templateVars);
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.post("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
+  console.log(req.body.newLongURL);
   urlDatabase[shortURL] = req.body.newLongURL;
   res.redirect(`/urls/${shortURL}`);
 });
@@ -167,11 +183,9 @@ function isRegistered(userID, res){
   }
 }
 
-function isLoggedIn (cookie, res){
+function isLoggedIn (cookie){
     if (cookie){
       return true;
-    } else {
-      res.redirect("/login");
     }
   }
 
@@ -179,7 +193,6 @@ function checkUrlOwnership(userId){
   for (var url in urlDatabase){
     if (userId === urlDatabase[url].userID){
       return true;
-    }
-    return false;
+    } 
   }
 }

@@ -2,12 +2,17 @@
 <body style="font-size:20px; padding:50px;">
     <h1>TinyApp</h1>
     <a href="/urls/new">Create New TinyURL</a>
-    <p>ShortURL: <strong> <%= shortURL %> </strong></p>
-    <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">    
-        <input type="text" name="newLongURL" placeholder="<%= urlDatabase[shortURL].longURL %>"></input>
-        <p>This URL belongs to <%= urlDatabase[shortURL].userID %> </p>
-        <button>Update longURL</button>
-    </form>
-
+    <% if(urlDatabase[shortURL].userID === user_id) {%>
+        <p>ShortURL: <strong><%= shortURL %> </strong></p>
+        <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">    
+            <input type="text" name="newLongURL" placeholder="<%= urlDatabase[shortURL].longURL %>"></input>
+            <p>This URL belongs to <%= urlDatabase[shortURL].userID %> </p>
+            <button class="btn btn-outline-warning"><a href="/urls/<%= shortURL %>">Update longURL</a></button>
+            <button class="btn btn-warning"><a href="/urls/<%=shortURL%>">Edit</a></button>
+            <form method="POST" action="/urls/<%= shortURL%>/delete">
+                <button class="btn btn-danger">Delete <i class="far fa-trash-alt"></i></button>
+            </form>
+        </form>
+        <% } %>
 </body>
 </html>
