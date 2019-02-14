@@ -28,7 +28,12 @@ const users = {
 }
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  let templateVars = { 
+    urlDatabase: urlDatabase,
+    users: users,
+    user_id: req.cookies["user_id"]
+   };
+  res.render("urls_welcome", templateVars);
 });
 
 app.get("/urls", (req, res) => {
@@ -128,14 +133,11 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
   res.clearCookie('user_id');
   res.redirect("/urls");
 });
 
-app.get("/hello", (req, res) => {
-    res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
@@ -154,3 +156,22 @@ function findUserByEmail(email){
     };
   }
 }
+
+function isRegistered(userId){
+  const userId = users[userId];
+  if (userId){
+    return true;
+  } else {
+    res.redirect("/register");
+  }
+}
+
+function isLoggedIn (userId){
+  const user = userId && users[userId];
+  if (user){
+    return true;
+  } else {
+    res.redirect("/login");
+  }
+}
+
