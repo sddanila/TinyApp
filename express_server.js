@@ -1,7 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 var PORT = 8080; // default port 8080
 
 app.set("view engine", "ejs");
@@ -17,12 +18,12 @@ const users = {
   "userRandomID": {
     id: "userRandomID", 
     email: "user@example.com", 
-    password: "password"
+    hashedPassword: "password"
   },
  "user2RandomID": {
     id: "user2RandomID", 
     email: "user2@example.com", 
-    password: "password"
+    hashedPassword: "password"
   }
 }
 
@@ -97,6 +98,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
   const foundUser = findUserByEmail(email);
   if (!email || email === "" || !password || password === "" || foundUser){
     res.send(400, "error... ooopsie...");
@@ -106,7 +108,7 @@ app.post("/register", (req, res) => {
     users[id] = { 
       'id': id,
       'email': email,
-      'password': password 
+      'hashedPassword': hashedPassword 
     };
     res.cookie('user_id', id);
     res.redirect("/urls");
@@ -119,9 +121,10 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   let userId = findUserByEmail(req.body.email);
+  let hashedPassword = users[userId].hashedPassword;
   if (!userId){
     res.send(403, "Email not found!");
-  } else if (users[userId].password !== req.body.password){
+  } else if (!bcrypt.compareSync(req.body.password, hashedPassword)){
     res.send(403, "Wrong password!");
   } else {
     res.cookie('user_id', userId);
