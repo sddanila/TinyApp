@@ -17,7 +17,7 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 
-
+// URL AND USER DATABASE
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "userRandomID" },
   i3BoGr: { longURL: "https://www.google.ca", userID: "user2RandomID" }
@@ -36,29 +36,32 @@ const users = {
   }
 }
 
+// LANDING PAGE
 app.get("/", (req, res) => {
   let templateVars = { 
     urlDatabase: urlDatabase,
     users: users,
     user_id: req.session.user_id
-   };
+  };
   res.render("urls_welcome", templateVars);
 });
 
+// INDEX PAGE WITH ALL URLS THAT BELONG TO THE SPECIFIC PERSON
 app.get("/urls", (req, res) => {  
   if(isLoggedIn(req.session.user_id)){
     let templateVars = { 
         urlDatabase: urlDatabase,
         users: users,
         user_id: req.session.user_id
-       };
-       checkUrlOwnership(req.session.user_id);
-       res.render("urls_index", templateVars);
-     } else {
-       res.redirect("/");
-     }
+    };
+    checkUrlOwnership(req.session.user_id);
+    res.render("urls_index", templateVars);
+    } else {
+      res.redirect("/");
+    }
   });
 
+  // ROUTE WHERE YOU CONVERT A NEW URL
 app.get("/urls/new", (req, res) => {
   let templateVars = { 
     urlDatabase: urlDatabase,
@@ -71,6 +74,7 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
+// ADDING NEW CONVERTED URL TO URL DATABASE AND ADDING IT TO SHOW PAGE
 app.post("/urls", (req, res) => {
   let randomURL = generateRandomString();
   urlDatabase[randomURL] = {
@@ -81,7 +85,7 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${randomURL}`);         // Respond with 'Ok' (we will replace this)
 });
 
-
+// THE PAGE TO LOOK AND EDIT JUST ONE SPECIFIC URL
 app.get("/urls/:shortURL", (req, res) => {
   if(isLoggedIn(req.session.user_id)){
     let templateVars = { 
@@ -96,28 +100,29 @@ app.get("/urls/:shortURL", (req, res) => {
   }
 });
 
+// EDIT ROUTE TO EDIT AN EXISTING URL THAT BELONGS TO A SPECIFIC USER
 app.post("/urls/:shortURL/edit", (req, res) => {
   let shortURL = req.params.shortURL;
-  console.log(req.body.newLongURL);
   urlDatabase[shortURL] = {
     longURL: req.body.newLongURL,
     userID: req.session.user_id
   };
-  console.log(urlDatabase);
   res.redirect("/urls");
 });
 
+// ROUTE TO DELETE A URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });
 
-
+// REROUTING TO THE SHORT URL WEBPAGE
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
+// PAGE TO REGISTER AS A NEW USER 
 app.get("/register", (req, res) => {
   let templateVars = { 
     urlDatabase: urlDatabase,
@@ -127,6 +132,7 @@ app.get("/register", (req, res) => {
   res.render("urls_register", templateVars);
 });
 
+// PAGE WHERE THE NEW USER REGISTRATION GETS SUBMITTED TO THEN REDIRECTS
 app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -147,13 +153,19 @@ app.post("/register", (req, res) => {
   }
 });
 
+// LOGIN PAGE
 app.get("/login", (req, res) => {
-  res.render("urls_login");
+  let templateVars = { 
+    urlDatabase: urlDatabase,
+    users: users,
+    user_id: req.session.user_id
+  };
+  res.render("urls_login", templateVars);
 });
 
+// LOGIN ROUTE WHERE WE CHECK IF USER/PASSWORD EXISTS AND IF THEY CAN LOGIN
 app.post("/login", (req, res) => {
   let userId = findUserByEmail(req.body.email);
-  console.log(users);
   if (!userId){
     res.status(403).send("Email not found!");
   } else if (!bcrypt.compareSync(req.body.password, users[userId].hashedPassword)){
@@ -164,6 +176,7 @@ app.post("/login", (req, res) => {
   }
 });
 
+// LOGOUT ROUTE
 app.get("/logout", (req, res) => {
   req.session = null;
   res.redirect("/urls");
@@ -174,6 +187,7 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+// HELPER FUNCTIONS
 function generateRandomString() {
     return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 }

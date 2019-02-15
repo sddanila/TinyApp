@@ -1,10 +1,11 @@
 <% include partials/_headers %>
-<body style="font-size:20px; padding:50px;">
-    <h1>TinyApp</h1>
-    <a href="/urls/new">Create New TinyURL</a>
+
+    <div class="text-center">
+            <a  href="/urls/new">Create New TinyURL</a>
+    </div>
+    <hr>
     <% if(urlDatabase[shortURL].userID === user_id) {%>
         <p>ShortURL: <strong><%= shortURL %> </strong></p>
-        <p>This URL belongs to <%= urlDatabase[shortURL].userID %> </p>
         <form class="form" action="/urls/<%=shortURL%>/edit" method="POST">    
             <input type="text" name="newLongURL" placeholder="<%= urlDatabase[shortURL].longURL %>"></input>
             <button class="btn btn-sm btn-light">Update longURL</button>
@@ -12,6 +13,7 @@
                 <button class="btn btn-sm btn-danger">Delete <i class="far fa-trash-alt"></i></button>
             </form>
         </form>
+        <p>This URL belongs to <%= urlDatabase[shortURL].userID %> </p>
         <% } %>
 </body>
 </html>
