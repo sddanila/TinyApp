@@ -51,21 +51,12 @@ This project is licensed under the LHL License
 
 ## App Flow
 
-* Landing page:
+!["Landing Page"](https://github.com/sddanila/TinyApp/blob/master/docs/welcome_page.png?raw=true)
 
-![Landing Page](./docs/welcome_page.png)
+!["Registration Page"](https://github.com/sddanila/TinyApp/blob/master/docs/registration_page.png?raw=true)
 
-* Registration page:
+!["Login Page"](https://github.com/sddanila/TinyApp/blob/master/docs/edit_page.png?raw=true)
 
-![Registration Page](./docs/registration_page.png)
+!["URLs Index Page"](https://github.com/sddanila/TinyApp/blob/master/docs/urls_index_page.png?raw=true)
 
-* Login page:
-
-![Landing Page](./docs/login_page.png)
-
-* URLs Index Page
-
-![Landing Page](./docs/urls_index_page.png)
-
-* Edit URLs Page
-![Landing Page](./docs/edit_page.png)
+!["Edit Page"](https://github.com/sddanila/TinyApp/blob/master/docs/edit_page.png?raw=true)
