@@ -58,10 +58,10 @@ This project is licensed under the LHL License
 !["Registration Page"](https://github.com/sddanila/TinyApp/blob/master/docs/registration_page.png?raw=true)
 
 * Login Page
-!["Login Page"](https://github.com/sddanila/TinyApp/blob/master/docs/edit_page.png?raw=true)
+!["Login Page"](https://github.com/sddanila/TinyApp/blob/master/docs/login_page.png)
 
 * URLs Index Page
-!["URLs Index Page"](https://github.com/sddanila/TinyApp/blob/master/docs/urls_index_page.png?raw=true)
+!["URLs Index Page"](https://github.com/sddanila/TinyApp/blob/master/docs/index_page.png)
 
 * Edit Page
-!["Edit Page"](https://github.com/sddanila/TinyApp/blob/master/docs/edit_page.png?raw=true)
+!["Edit Page"](https://github.com/sddanila/TinyApp/blob/master/docs/edit_page.png)
