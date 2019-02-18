@@ -65,7 +65,8 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   let templateVars = { 
     urlDatabase: urlDatabase,
-    user_id: req.session.user_id
+    user_id: req.session.user_id,
+    users: users
   };
   if(isLoggedIn(req.session.user_id)){
     res.render("urls_new", templateVars);

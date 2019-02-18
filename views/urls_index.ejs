@@ -6,7 +6,7 @@
     <hr>
     <% for(var url in urlDatabase){ %>
         <% if(urlDatabase[url].userID === user_id) {%>
-            <%= url %> <i class="fas fa-arrow-right"></i> <%= urlDatabase[url].longURL %> 
+            <a href="http://localhost:8080/u/<%= url %>"><%= url %></a> <i class="fas fa-arrow-right"></i> <%= urlDatabase[url].longURL %> 
                 <div class="btn-group">
                     <button class="btn btn-sm btn-warning"><a href="/urls/<%=url%>">Edit</a></button>
                 </div>
@@ -18,5 +18,6 @@
                 <p></p>
         <% } %>
     <% }%>
+    <p style="padding-top: 10px">To visit any of the short URLs: http://localhost:8080/u/shortURL</p>
 </body>
 </html>

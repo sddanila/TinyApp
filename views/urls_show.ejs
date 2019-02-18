@@ -2,11 +2,11 @@
 <% include partials/_headers %>
 
     <div class="text-center">
-            <a  href="/urls/new">Create New TinyURL</a>
+        <a  href="/urls/new">Create New TinyURL</a>
     </div>
     <hr>
     <% if(urlDatabase[shortURL].userID === user_id) {%>
-        <p>ShortURL: <strong><%= shortURL %> </strong></p>
+        <p>ShortURL: <strong><a href="/u/<%= shortURL %>"><%= shortURL %></a></strong></p>
         <form class="form" action="/urls/<%=shortURL%>/edit" method="POST">    
             <input type="text" name="newLongURL" placeholder="<%= urlDatabase[shortURL].longURL %>"></input>
             <button class="btn btn-sm btn-light">Update longURL</button>
@@ -14,7 +14,10 @@
                 <button class="btn btn-sm btn-danger">Delete <i class="far fa-trash-alt"></i></button>
             </form>
         </form>
-        <p>This URL belongs to <%= urlDatabase[shortURL].userID %> </p>
         <% } %>
+        <p style="padding-top: 10px">To visit any of the short URLs: http://localhost:8080/u/shortURL</p>
+        <div>
+            <a href="/urls"><i class="far fa-hand-point-left"></i> Go back to all URLs</a>
+        </div>
 </body>
 </html>
