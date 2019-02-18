@@ -1,10 +1,10 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var app = express();
+let express = require("express");
+let bodyParser = require("body-parser");
+let app = express();
 // var cookieParser = require('cookie-parser');
-var cookieSession = require('cookie-session');
+let cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
-var PORT = 8080; // default port 8080
+let PORT = 8080; // default port 8080
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -183,17 +183,14 @@ app.get("/logout", (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
-});
 
 // HELPER FUNCTIONS
 function generateRandomString() {
-    return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+  return Math.floor((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 }
 
 function findUserByEmail(email){
-  for (var user in users){
+  for (let user in users){
     if (users[user].email === email){
       return user;
     }
@@ -201,7 +198,7 @@ function findUserByEmail(email){
 }
 
 function isRegistered(userID, res){
-  for (var userID in users){
+  for (let userID in users){
     if (userID){
       return true;
     } else {
@@ -211,15 +208,20 @@ function isRegistered(userID, res){
 }
 
 function isLoggedIn (cookie){
-    if (cookie){
-      return true;
-    }
+  if (cookie){
+    return true;
   }
+}
 
 function checkUrlOwnership(userId){
-  for (var url in urlDatabase){
+  for (let url in urlDatabase){
     if (userId === urlDatabase[url].userID){
       return true;
     } 
   }
 }
+
+
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
